@@ -1,85 +1,29 @@
 # Pokémon TCG SDK
+This is a personal fork of the Pokémon TCG SDK PHP implementation, originally developed by mmonkey@gmail.com. 
 
-[![pokemontcg-developers on discord](https://img.shields.io/badge/discord-pokemontcg--developers-738bd7.svg)](https://discord.gg/dpsTCvg)
-[![Build Status](https://travis-ci.org/PokemonTCG/pokemon-tcg-sdk-php.svg?branch=master)](https://travis-ci.org/PokemonTCG/pokemon-tcg-sdk-php)
-[![Code Climate](https://codeclimate.com/github/PokemonTCG/pokemon-tcg-sdk-php/badges/gpa.svg)](https://codeclimate.com/github/PokemonTCG/pokemon-tcg-sdk-php)
-
-This is the Pokémon TCG SDK PHP implementation. It is a wrapper around the Pokémon TCG API of [pokemontcg.io](http://pokemontcg.io/).
+This fork adds features to the original, including basic OR and AND searches for the `where()` function.
 
 ## Installation
     
-    composer require pokemon-tcg/pokemon-tcg-sdk-php
+    composer require danerainbird/pokemon-tcg-sdk-php
     
 ## Usage
-    
-#### Set ApiKey and options
-[See the Guzzle 7 documentation for available options.](https://docs.guzzlephp.org/en/stable/request-options.html)
-    
-    Pokemon::Options(['verify' => true]);
-    Pokemon::ApiKey('<YOUR_API_KEY_HERE>');
+This fork of pokemon-tcg-sdk-php adds a very basic ability to use AND and OR operators when using the `where()` operation:
 
-#### Find a Card by id
+**AND Operator:**
 
-    $card = Pokemon::Card()->find('xy1-1');
-    
-#### Filter Cards via query parameters
+    Pokemon::Card()->where(['types' => ['AND', 'grass', 'lightning']])->all();
+Will return all cards that have the types of Lightning AND Grass
 
-    $cards = Pokemon::Card()->where(['set.name' => 'generations'])->where(['supertype' => 'pokemon'])->all();
-    
-    $cards = Pokemon::Card()->where([
-        'set.name' => 'roaring skies',
-        'subtypes' => 'ex'
-    ])->all();
-    
-#### Get all Cards
+**OR Operator:**
 
-    $cards = Pokemon::Card()->all();
-    
-#### Paginate Card queries
+    Pokemon::Card()->where(['types' => ['OR', 'grass', 'lightning']])->all();
+Will return all cards that have the types of Lightning OR Grass
 
-    $cards = Pokemon::Card()->where([
-        'set.legalities.standard' => 'legal'
-    ])->page(8)->pageSize(100)->all();
-    
-#### Get Card pagination information
+These operators be chained with other, standard `where()` queries, such as the following:
 
-    $pagination = Pokemon::Card()->where([
-        'set.legalities.standard' => 'legal'
-    ])->pagination();
-    
-#### Find a Set by set code
+    Pokemon::Card()->where(['types' => ['OR', 'grass', 'lightning'], 'rarity' => 'vmax'])->all();
+Will return all card that have the types of Lightning OR Grass, and a Rarity of VMAX.
 
-    $set = Pokemon::Set()->find('base1');
-    
-#### Filter Sets via query parameters
-
-    $set = Pokemon::Set()->where(['legalities.standard' => 'legal'])->all();
-    
-#### Paginate Set queries
-
-    $set = Pokemon::Set()->page(2)->pageSize(10)->all();
-    
-#### Get Set pagination information
-
-    $pagination = Pokemon::Set()->pagination();
-    
-#### Get all Sets
-
-    $sets = Pokemon::Set()->all();
-    
-#### Get all Types
-
-    $types = Pokemon::Type()->all();
-    
-#### Get all Subtypes
-
-    $subtypes = Pokemon::Subtype()->all();
-    
-#### Get all Supertypes
-
-    $supertypes = Pokemon::Supertype()->all();
-    
-#### Get all Rarities
-
-    $supertypes = Pokemon::Rarity()->all();
-    
+## Original Functionality?
+All details pertaining to the original functionality (i.e. how to use it, how to authenticate, etc.) of `pokemon-tcg-sdk-php` can be found [at it's GitHub repo](https://github.com/PokemonTCG/pokemon-tcg-sdk-php).
