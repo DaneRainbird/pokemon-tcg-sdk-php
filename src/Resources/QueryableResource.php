@@ -64,8 +64,14 @@ class QueryableResource extends JsonResource implements QueriableResourceInterfa
 
         $queryParams = [];
         if (!empty($this->query)) {
+            // Queries can either be in the form of attribute: value or attribute: [operator, value1, value2]
+            // In practical terms, this can be something like hp => 100, or subType => ['OR', 'GX', 'EX']
             $query = array_map(function ($attribute, $value) {
-                return $attribute . ':"' . $value . '"';
+                if (is_array($value)) {
+                    return $attribute . ':"' . implode('" ' . $value[0] . ' ' . $attribute . ':"', array_slice($value, 1)) . '"';
+                }
+
+                return $attribute . ':' . $value;
             }, array_keys($this->query), $this->query);
 
             $queryParams['q'] = implode(' ', $query);
