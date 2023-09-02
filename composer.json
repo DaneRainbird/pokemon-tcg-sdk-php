@@ -1,17 +1,25 @@
 {
-    "name": "pokemon-tcg/pokemon-tcg-sdk-php",
-    "description": "This is the Pokémon TCG SDK PHP implementation. It is a wrapper around the Pokémon TCG API of pokemontcg.io.",
+    "name": "danerainbird/pokemon-tcg-sdk-php",
+    "description": "A personal fork of the Pokémon TCG SDK PHP implementation, based on pokemontcg/pokemon-tcg-sdk-php.",
     "keywords": [
         "pokemon",
         "tcg",
-        "sdk"
+        "sdk",
+        "fork"
     ],
     "type": "library",
     "license": "MIT",
     "authors": [
         {
             "name": "CJ O'Hara",
-            "email": "mmonkey@gmail.com"
+            "email": "mmonkey@gmail.com",
+            "role": "Initial Developer"
+        }, 
+        {
+            "name": "Dane Rainbird",
+            "email": "hello@danerainbird.me",
+            "homepage": "https://danerainbird.me",
+            "role": "Fork Developer"
         }
     ],
     "require": {
