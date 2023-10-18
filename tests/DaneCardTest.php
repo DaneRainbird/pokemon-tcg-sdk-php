@@ -56,6 +56,20 @@ class DaneCardTest extends TestCase
     }
 
     /**
+     * Test WHERE functionality with SELECTS
+     */
+    public function testWhereWithSelects(): void {
+        Pokemon::Options(['verify' => false]);
+
+        $cards = Pokemon::Card()->where(['name' => 'pikachu'])->selects('id,name')->all();
+
+        $this->assertNotEmpty($cards);
+        $this->assertContainsOnlyInstancesOf(Card::class, $cards);
+        $this->assertTrue(count($cards) > 1);
+        $this->assertEquals(null, $cards[0]->getFlavorText());
+    }
+
+    /**
      * Test WHERE functionality with AND
      */
     public function testWhereWithAnd(): void {

@@ -147,6 +147,17 @@ class QueryableResource extends JsonResource implements QueriableResourceInterfa
     }
 
     /**
+     * @param string $selects
+     * @return QueriableResourceInterface
+     */
+    public function selects(string $selects): QueriableResourceInterface
+    {
+        $this->selects = $selects;
+
+        return $this;
+    }
+
+    /**
      * @param string $attribute
      * @param int $direction
      * @return QueriableResourceInterface
