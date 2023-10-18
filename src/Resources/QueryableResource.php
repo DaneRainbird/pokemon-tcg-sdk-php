@@ -49,6 +49,11 @@ class QueryableResource extends JsonResource implements QueriableResourceInterfa
     protected $identifier;
 
     /**
+     * @var string|null
+     */
+    protected $selects;
+
+    /**
      * @return Request
      */
     protected function prepare(): Request
@@ -58,6 +63,12 @@ class QueryableResource extends JsonResource implements QueriableResourceInterfa
         if (!empty($this->identifier)) {
             $uri = $uri . '/' . $this->identifier;
             $this->identifier = null;
+
+            // If there are selects, add them to the method
+            if ($this->selects !== null) {
+                $uri = $uri . '?' . http_build_query(['select' => $this->selects]);
+                $this->selects = null;
+            }
 
             return new Request($this->method, $uri);
         }
@@ -86,6 +97,11 @@ class QueryableResource extends JsonResource implements QueriableResourceInterfa
         if ($this->pageSize !== self::DEFAULT_PAGE_SIZE) {
             $queryParams['pageSize'] = $this->pageSize;
             $this->pageSize = self::DEFAULT_PAGE_SIZE;
+        }
+
+        if ($this->selects !== null) {
+            $queryParams['select'] = $this->selects;
+            $this->selects = null;
         }
 
         if (!empty($this->orderBy)) {
@@ -177,9 +193,10 @@ class QueryableResource extends JsonResource implements QueriableResourceInterfa
      * @throws InvalidArgumentException
      * @throws GuzzleException
      */
-    public function find($identifier): ?Model
+    public function find($identifier, $selects=null): ?Model
     {
         $this->identifier = $identifier;
+        $this->selects = $selects;
         try {
             $response = $this->getResponseData($this->client->send($this->prepare()));
         } catch (ClientException $e) {

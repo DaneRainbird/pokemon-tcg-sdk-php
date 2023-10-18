@@ -24,6 +24,6 @@ interface QueriableResourceInterface extends ResourceInterface
      *
      * @return Model|null
      */
-    public function find($identifier);
+    public function find($identifier, $selects = null);
 
 }

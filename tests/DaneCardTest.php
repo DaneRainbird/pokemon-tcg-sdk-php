@@ -42,6 +42,19 @@ class DaneCardTest extends TestCase
         parent::setUp();
     }
 
+    /** 
+     * Test FIND functionality with SELECTS
+     */
+    public function testFindWithSelects(): void {
+        Pokemon::Options(['verify' => false]);
+
+        $card = Pokemon::Card()->find('xy7-54', 'id,name');
+        $this->assertInstanceOf(Card::class, $card);
+        $this->assertEquals('xy7-54', $card->getId());
+        $this->assertEquals('Gardevoir', $card->getName());
+        $this->assertNull($card->getImages());
+    }
+
     /**
      * Test WHERE functionality with AND
      */
